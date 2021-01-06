@@ -1,57 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import './App.scss';
+import { ServerContext } from './app/ServerContext';
+import { PriceGlanceTable } from './features/item-details/PriceGlance';
+import Navbar from './features/navbar/NavBar';
+import { ServerPicker } from './features/server-picker/ServerPicker';
+import Items from './routes/Items';
 
 function App() {
+  const [server, setServer] = useState(3682);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <ServerContext.Provider value={{ server, setServer }}>
+      <Router>
+        <div>
+          <Navbar />
+          {/* <ServerPicker /> */}
+
+          <main>
+            {/* <img src={logo} className="App-logo" alt="logo" /> */}
+            {/* <ItemSelector itemId={10377} /> */}
+            {/* <ItemSelector itemId={124105} /> */}
+
+            <Switch>
+              <Route path="/items/:id">
+                <Items />
+              </Route>
+
+              <Route path="/">
+                <Link to="/items/10377">To the item!</Link>
+                <PriceGlanceTable itemIds={[152512, 152513, 152579, 168185]}/>
+                <PriceGlanceTable itemIds={[152510, 152509, 152505, 152508, 152506, 152507, 152511, 168487]}/>
+              </Route>
+            </Switch>
+          </main>
+        </div>
+      </Router>
+    </ServerContext.Provider>
   );
 }
 

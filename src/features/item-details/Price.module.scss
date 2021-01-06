@@ -1,0 +1,15 @@
+@import 'src/styles/shared.scss';
+
+.priceSpan {
+    font-weight: 600;
+}
+
+.goldSpan {
+    @extend .priceSpan;
+    color: $goldColor;
+}
+
+.silverSpan {
+    @extend .priceSpan;
+    color: $silverColor;
+}
