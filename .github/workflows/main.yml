@@ -39,6 +39,8 @@ jobs:
       - run: yarn build
         env:
           CI: false
-      - run: yarn test
-        env:
-          CI: false
+      
+      # TODO: Add unit testing when it is ready
+      # - run: yarn test
+      #   env:
+      #     CI: false
