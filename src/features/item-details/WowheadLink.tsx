@@ -31,6 +31,6 @@ export const WowheadLink = ({ item, ...props }: { item: Item } & any) => {
     }, [item]);
 
     return (
-        <a href="#" data-wowhead={wowheadItemData(item)} data-wh-rename-link="true" {...props} className={`q3 links ${className}`}></a>
+        <a href={`/items/${item.id}`} data-wowhead={wowheadItemData(item)} data-wh-rename-link="true" {...props} className={`q3 links ${className}`}>Wowhead link to item with id {item.id}</a>
     );
 }

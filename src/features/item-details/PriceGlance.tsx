@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'; 
+import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { ServerContext } from '../../app/ServerContext';
 import { Item } from '../../models/models';
@@ -46,14 +47,14 @@ const PriceGlanceRow = ({ itemId }: { itemId: number }) => {
 
         setIsLoading(true);
         fetchData();
-    }, [itemId]);
+    }, [itemId, server]);
 
     if(error.hadError) return <tr><td>{error.message}</td></tr>
     if(isLoading) return <tr><td>Loading...</td></tr>;
 
     return (
         <tr>
-            <td><WowheadLinkOnlyId itemId={itemId} href={`/items/${itemId}`} /></td>
+            <td><Link to={`/items/${itemId}`}><WowheadLinkOnlyId itemId={itemId}/></Link></td>
             <td><Price value={state.marketvalue} /></td>
             <td>{state.quantity}</td>
         </tr>

@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Auction, ItemPriceDetails } from '../../models/models';
 import { Price } from './Price';
 
 import styles from './ItemDetails.module.scss';
-import { ServerContext } from '../../app/ServerContext';
 import { WowheadLink } from './WowheadLink';
 
 interface ProcessedAuction {
@@ -58,40 +57,22 @@ const AuctionsTable = ({ auctions }: { auctions: Auction[] }) => {
     );
 };
 
-export function ItemDetails({ itemId }: { itemId: number }) {
-    const [state, setState] = useState({} as ItemPriceDetails);
-    const [isLoading, setIsLoading] = useState(true);
-
-    const { server } = useContext(ServerContext);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await fetch(`http://localhost:5000/items/prices/${itemId}?serverId=${server}`)
-                .then(res => res.json());
-            
-            setState(data);
-            setIsLoading(false);
-        };
-
-        setIsLoading(true);
-        fetchData();
-    }, [itemId, server]);
-
-    if(isLoading) return <div>Loading...</div>;
+export function ItemDetails({ itemPriceData }: { itemPriceData: ItemPriceDetails|undefined }) {
+    if(itemPriceData === undefined) return <div>Item not found.</div>
 
     return (
         <>
-        <h2><WowheadLink item={state.item} className={styles.item_name} data-wh-icon-size="medium" /></h2>
+        <h2><WowheadLink item={itemPriceData.item} className={styles.item_name} data-wh-icon-size="medium" /></h2>
         <div className={styles.wrapper}>
             <div className={styles.left_col}>
                 <div className={styles.mv_container}>
                     <table className={styles.mv_table}>
                         <tbody>
                             <tr>
-                                <td>Marketvalue:</td><td><Price value={state.marketvalue} /></td>
+                                <td>Marketvalue:</td><td><Price value={itemPriceData.marketvalue} /></td>
                             </tr>
                             <tr>
-                                <td>Quantity:</td><td>{state.quantity.toLocaleString()}</td>
+                                <td>Quantity:</td><td>{itemPriceData.quantity.toLocaleString()}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -105,7 +86,7 @@ export function ItemDetails({ itemId }: { itemId: number }) {
 
             </div>
 
-            <AuctionsTable auctions={state.auctions} />
+            <AuctionsTable auctions={itemPriceData.auctions} />
         </div>
         </>
     );

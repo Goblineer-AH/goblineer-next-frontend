@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Select from 'react-select';
 import { ServerContext } from '../../app/ServerContext';
-import { Item } from '../../models/models';
+import { Item, ItemPriceDetails } from '../../models/models';
 import { ItemDetails } from './ItemDetails';
 
 import styles from './ItemSelector.module.scss';
-import { WowheadLink } from './WowheadLink';
 
 interface TaggedItem {
     item: Item,
@@ -15,9 +14,12 @@ interface TaggedItem {
 
 export const ItemSelector = ({ itemId }: { itemId? : number }) => {
     const [items, setItems] = useState([] as TaggedItem[]);
+    const [itemPriceData, setItemPriceData] = useState([] as ItemPriceDetails[]);
     const [selectedItem, setSelectedItem] = useState({} as Item);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState({ hadError: false, message: '' });
+
+    const { server } = useContext(ServerContext);
     
     useEffect(() => {
         const handleError = (message: string) => {
@@ -29,9 +31,9 @@ export const ItemSelector = ({ itemId }: { itemId? : number }) => {
         }
 
         const fetchData = async () => {
-            let data: Item[] = [];
+            let data: ItemPriceDetails[] = [];
             try {
-                data = await fetch(`http://localhost:5000/items/${itemId}`)
+                data = await fetch(`http://localhost:5000/items/prices/${itemId}?serverId=${server}`)
                     .then(res => {
                         if(res.ok) return res.json();
                         else throw new Error(res.statusText);
@@ -46,7 +48,7 @@ export const ItemSelector = ({ itemId }: { itemId? : number }) => {
                 return;
             }
 
-            const taggedItems = data.map(item => {
+            const taggedItems = data.map(({ item }) => {
                 const bonuses = item.bonuses?.join(', ');
 
                 let ilvl = undefined;
@@ -72,6 +74,7 @@ export const ItemSelector = ({ itemId }: { itemId? : number }) => {
             });
 
             setItems(taggedItems);
+            setItemPriceData(data);
             setSelectedItem(taggedItems[0].item);
 
             setIsLoading(false);
@@ -79,7 +82,7 @@ export const ItemSelector = ({ itemId }: { itemId? : number }) => {
 
         setIsLoading(true);
         fetchData();
-    }, [itemId]);
+    }, [itemId, server]);
 
     if(error.hadError) return <div>{error.message}</div>
     if(isLoading) return <div>Loading...</div>;
@@ -98,14 +101,17 @@ export const ItemSelector = ({ itemId }: { itemId? : number }) => {
         setSelectedItem(value.item);
     };
 
+    const selectedItemPriceData = () => 
+        itemPriceData.find(({ item }) => item.internalId === selectedItem.internalId);
+
     return (
         <div>
-            {/* <div className={styles.wrapper}>
+            <div className={styles.wrapper}>
                 {items.length > 1 &&
                 <Select className={styles.selector} options={items} defaultValue={items[0]} filterOption={customFilterOption} onChange={onSelectChanged} />}
-            </div> */}
+            </div>
 
-            <ItemDetails itemId={selectedItem.internalId} />
+            <ItemDetails itemPriceData={selectedItemPriceData()} />
         </div>
     );
 };
