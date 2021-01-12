@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Select from 'react-select';
 import { ServerContext } from '../../app/ServerContext';
+import { Config } from '../../config';
 
 import styles from './ServerPicker.module.scss';
 
@@ -34,7 +35,7 @@ export const ServerPicker = () => {
         const fetchData = async () => {
             let data = [] as Server[];
             try {
-                data = await fetch(`http://localhost:5000/servers`)
+                data = await fetch(`${Config.api_url}/servers`)
                     .then(res => {
                         if(res.ok) return res.json();
                         else throw new Error(res.statusText);

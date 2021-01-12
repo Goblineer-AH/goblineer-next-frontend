@@ -1,7 +1,23 @@
 # Goblineer Next Frontend ![CI](https://github.com/Goblineer-AH/goblineer-next-frontend/workflows/CI/badge.svg)
 React Frontend for Goblineer. Visualises auction house data from World of Warcraft.
 
-## Available Scripts
+## Docker deployment
+### Building with Docker
+```sh
+docker build . -t <your image tag>
+```
+
+### Running with Docker
+```sh
+docker run -it --rm -e API_URL=<your api url> -p 80:80 <your image tag>
+```
+
+## Development
+
+Copy `public/config.example.js` to `public/config.js` and edit this line so that it points to your local API instance:
+```js
+window.REACT_APP_API_URL="http://localhost:5000";
+``` 
 
 In the project directory, you can run:
 
@@ -17,14 +33,3 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-

@@ -3,4 +3,5 @@ declare interface Window {
         refreshLinks: () => void;
     }
     WH: any;
+    REACT_APP_API_URL: string|undefined;
 }

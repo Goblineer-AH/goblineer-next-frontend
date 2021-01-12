@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Select from 'react-select';
 import { ServerContext } from '../../app/ServerContext';
+import { Config } from '../../config';
 import { Item, ItemPriceDetails } from '../../models/models';
 import { ItemDetails } from './ItemDetails';
 
@@ -33,7 +34,7 @@ export const ItemSelector = ({ itemId }: { itemId? : number }) => {
         const fetchData = async () => {
             let data: ItemPriceDetails[] = [];
             try {
-                data = await fetch(`http://localhost:5000/items/prices/${itemId}?serverId=${server}`)
+                data = await fetch(`${Config.api_url}/items/prices/${itemId}?serverId=${server}`)
                     .then(res => {
                         if(res.ok) return res.json();
                         else throw new Error(res.statusText);

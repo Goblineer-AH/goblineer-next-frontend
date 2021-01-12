@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { ServerContext } from '../../app/ServerContext';
+import { Config } from '../../config';
 import { Item } from '../../models/models';
 import { Price } from './Price';
 import { WowheadLinkOnlyId } from './WowheadLink';
@@ -31,7 +32,7 @@ const PriceGlanceRow = ({ itemId }: { itemId: number }) => {
         const fetchData = async () => {
             let data = {} as PriceGlance;
             try {
-                data = await fetch(`http://localhost:5000/items/glance_price/${itemId}?serverId=${server}`)
+                data = await fetch(`${Config.api_url}/items/glance_price/${itemId}?serverId=${server}`)
                     .then(res => {
                         if(res.ok) return res.json();
                         else throw new Error(res.statusText);
