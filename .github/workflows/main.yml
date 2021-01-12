@@ -52,15 +52,15 @@ jobs:
     steps:
       - name: Setting the docker tag
         run: |
-          if [ "$BRANCH" == "refs/heads/master" ]; then
-            $DOCKER_TAG="$BASE_TAG:latest"
-          elif [ "$BRANCH" == "refs/heads/staging" ]; then
-            $DOCKER_TAG="$BASE_TAG:staging"
-          else
-            $DOCKER_TAG="$BASE_TAG:beta"
-          fi
-          echo "Docker tag will be '$DOCKER_TAG'"
-          echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+            if [[ "$BRANCH" == "refs/heads/master" ]]; then
+              DOCKER_TAG="$BASE_TAG:latest"
+            elif [[ "$BRANCH" == "refs/heads/staging" ]]; then
+              DOCKER_TAG="$BASE_TAG:staging"
+            else
+              DOCKER_TAG="$BASE_TAG:beta"
+            fi
+            echo "Docker tag will be '$DOCKER_TAG'"
+            echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
         env:
           BRANCH: ${{ github.ref }}
           BASE_TAG: goblineer/goblineer-next-frontend
