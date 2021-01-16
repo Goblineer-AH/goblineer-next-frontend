@@ -81,6 +81,7 @@ export function ItemDetails({ itemPriceData }: { itemPriceData: ItemPriceDetails
                 <img src="https://i.imgur.com/YHwzb4X.png" className={styles.chart} alt=""/>
 
                 <div className={styles.mv_container}>
+                    <p>Testing CI/CD pipeline</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, enim reprehenderit ratione cupiditate, aliquid possimus tempore asperiores, ad numquam eum nostrum. Voluptas reiciendis soluta debitis tenetur nam dolore doloribus. Vitae?</p>
                 </div>
 
